@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>dekoeky.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Dekoeky.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Title>Dekoeky.Calculator</Title>
+    <Version>$(VersionPrefix)</Version>
+    <Authors>Wesley Van Koeckhoven</Authors>
+    <Company>Wesley Van Koeckhoven</Company>
+    <Description>A simple calculator, for testing nuget packages</Description>
+    <PackageProjectUrl>https://github.com/dekoeky/calculator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dekoeky/calculator</RepositoryUrl>
+    <PackageTags>calculator</PackageTags>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Deterministic>True</Deterministic>
+    <ContinuousIntegrationBuild>True</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
