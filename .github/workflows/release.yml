@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"   # e.g. v1.0.0
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+jobs:
+  build-test-pack:
+    name: Build, Test, Validate & Pack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run Tests
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # --- SourceLink validation ---
+      - name: Validate SourceLink
+        run: dotnet sourcelink test ./calculator/bin/Release/**/*.dll
+
+      # --- Pack (includes .snupkg symbols) ---
+      - name: Pack
+        run: dotnet pack --configuration Release --no-build -o ./artifacts
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: nuget-package
+          path: ./artifacts/*.*nupkg
+
+  publish:
+    name: Publish to NuGet.org & GitHub Packages
+    needs: build-test-pack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download package artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: nuget-package
+          path: ./artifacts
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      # --- Publish to GitHub Packages ---
+      - name: Publish to GitHub Packages
+        run: dotnet nuget push "./artifacts/*.nupkg" \
+              --source "github" \
+              --api-key "${{ secrets.GITHUB_TOKEN }}" \
+              --skip-duplicate
+
+      # --- Publish to nuget.org using OIDC ---
+      - name: Publish to NuGet.org (OIDC)
+        run: dotnet nuget push "./artifacts/*.nupkg" \
+              --source "https://api.nuget.org/v3/index.json" \
+              --skip-duplicate
