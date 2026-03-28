@@ -66,15 +66,8 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
-      - name: list nuget sources
-        run: dotnet nuget list source
-        continue-on-error: true
-
-      - run: ls
-        continue-on-error: true
-
-      - run: tree
-        continue-on-error: true
+      - name: Add GitHub NuGet Source
+        run: dotnet nuget add source https://nuget.pkg.github.com/dekoeky/index.json -n github
 
       # --- Publish to nuget.org using API KEY ---
       - name: Publish to NuGet.org
