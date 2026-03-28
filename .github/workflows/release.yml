@@ -67,7 +67,8 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: list nuget sources
-        run: dotnet nuget list
+        run: dotnet nuget list source
+        continue-on-error: true
 
 
       # --- Publish to nuget.org using API KEY ---
