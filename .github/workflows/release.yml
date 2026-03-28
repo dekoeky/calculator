@@ -66,10 +66,15 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
+      - name: list nuget sources
+        run: dotnet nuget list
+
+
       # --- Publish to nuget.org using API KEY ---
       - name: Publish to NuGet.org (OIDC)
         run: |
           dotnet nuget push "./artifacts/*.nupkg" \
+              --configfile nuget.config \
               --source "https://api.nuget.org/v3/index.json" \
               --api-key ${{ secrets.NUGET_API_KEY }} \
               --skip-duplicate
@@ -79,6 +84,7 @@ jobs:
       - name: Publish to GitHub Packages
         run: | 
           dotnet nuget push "./artifacts/*.nupkg" \
+              --configfile nuget.config \
               --source "github" \
               --api-key "${{ secrets.GITHUB_TOKEN }}" \
               --skip-duplicate
