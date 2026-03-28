@@ -70,9 +70,14 @@ jobs:
         run: dotnet nuget list source
         continue-on-error: true
 
+      - run: ls
+        continue-on-error: true
+
+      - run: tree
+        continue-on-error: true
 
       # --- Publish to nuget.org using API KEY ---
-      - name: Publish to NuGet.org (OIDC)
+      - name: Publish to NuGet.org
         run: |
           dotnet nuget push "./artifacts/*.nupkg" \
               --configfile nuget.config \
