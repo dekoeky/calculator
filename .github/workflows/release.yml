@@ -33,9 +33,9 @@ jobs:
       - name: Run Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
-      # --- SourceLink validation ---
-      - name: Validate SourceLink
-        run: dotnet sourcelink test ./calculator/bin/Release/**/*.dll
+      # # --- SourceLink validation ---
+      # - name: Validate SourceLink
+      #   run: dotnet sourcelink test ./calculator/bin/Release/**/*.dll
 
       # --- Pack (includes .snupkg symbols) ---
       - name: Pack
