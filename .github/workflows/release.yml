@@ -66,14 +66,16 @@ jobs:
 
       # --- Publish to nuget.org using OIDC ---
       - name: Publish to NuGet.org (OIDC)
-        run: dotnet nuget push "./artifacts/*.nupkg" \
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
               --source "https://api.nuget.org/v3/index.json" \
               --skip-duplicate
 
 
       # --- Publish to GitHub Packages ---
       - name: Publish to GitHub Packages
-        run: dotnet nuget push "./artifacts/*.nupkg" \
+        run: | 
+          dotnet nuget push "./artifacts/*.nupkg" \
               --source "github" \
               --api-key "${{ secrets.GITHUB_TOKEN }}" \
               --skip-duplicate
